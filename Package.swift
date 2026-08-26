@@ -18,6 +18,10 @@ let package = Package(
     ],
     dependencies: [
         .package(
+            url: "https://github.com/swift-primitives/swift-optic-primitives.git",
+            branch: "main"
+        ),
+        .package(
             url: "https://github.com/swiftlang/swift-syntax.git",
             "602.0.0"..<"603.0.0"
         ),
@@ -42,12 +46,30 @@ let package = Package(
         ),
         .target(
             name: "Prism Derivation",
-            dependencies: ["Prism Derivation Macros"]
+            dependencies: [
+                "Prism Derivation Macros",
+                .product(name: "Optic Primitives", package: "swift-optic-primitives"),
+            ]
         ),
         .testTarget(
             name: "Prism Derivation Tests",
-            dependencies: ["Prism Derivation"]
+            dependencies: [
+                "Prism Derivation",
+                .product(name: "Optic Primitives", package: "swift-optic-primitives"),
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]
 )
+
+for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
+    target.swiftSettings = (target.swiftSettings ?? []) + [
+        .strictMemorySafety(),
+        .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("InternalImportsByDefault"),
+        .enableUpcomingFeature("MemberImportVisibility"),
+        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+        .enableExperimentalFeature("Lifetimes"),
+        .enableUpcomingFeature("InferIsolatedConformances"),
+    ]
+}
