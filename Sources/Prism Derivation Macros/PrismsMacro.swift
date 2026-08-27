@@ -3,7 +3,7 @@ import SwiftSyntax
 import SwiftSyntaxMacros
 import Prism_Derivation_Core
 
-public struct PrismsMacro: MemberMacro {
+public struct PrismsMacro: MemberMacro, ExtensionMacro {
     public static func expansion(
         of node: AttributeSyntax,
         providingMembersOf declaration: some DeclGroupSyntax,
@@ -46,5 +46,22 @@ public struct PrismsMacro: MemberMacro {
                 ]
             )
         }
+    }
+}
+
+extension PrismsMacro {
+    public static func expansion(
+        of _: AttributeSyntax,
+        attachedTo declaration: some DeclGroupSyntax,
+        providingExtensionsOf type: some TypeSyntaxProtocol,
+        conformingTo _: [TypeSyntax],
+        in _: some MacroExpansionContext
+    ) throws -> [ExtensionDeclSyntax] {
+        guard declaration.is(EnumDeclSyntax.self) else { return [] }
+        return [
+            try ExtensionDeclSyntax(
+                "extension \(type.trimmed): Optic_Primitives.__OpticPrismAccessible {}"
+            )
+        ]
     }
 }
