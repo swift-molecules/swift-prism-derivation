@@ -1,3 +1,5 @@
+import Optic
+
 @attached(member, names: named(Prisms), named(prisms))
 @attached(
     extension,
