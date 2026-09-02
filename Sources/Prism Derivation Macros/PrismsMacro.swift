@@ -24,13 +24,7 @@ public struct PrismsMacro: MemberMacro, ExtensionMacro {
         }
         do throws(PrismDerivation.Diagnostic) {
             let prism = TypeSyntax(
-                MemberTypeSyntax(
-                    baseType: IdentifierTypeSyntax(
-                        name: .identifier("Prism_Derivation")
-                    ),
-                    period: .periodToken(),
-                    name: .identifier("Prism")
-                )
+                stringLiteral: "Optic::Optic"
             )
             return try PrismDerivation.expansion(
                 of: enumDeclaration,
@@ -60,7 +54,7 @@ extension PrismsMacro {
         guard declaration.is(EnumDeclSyntax.self) else { return [] }
         return [
             try ExtensionDeclSyntax(
-                "extension \(type.trimmed): Optic_Primitives.__OpticPrismAccessible {}"
+                "extension \(type.trimmed): Optic::__OpticPrismAccessible {}"
             )
         ]
     }

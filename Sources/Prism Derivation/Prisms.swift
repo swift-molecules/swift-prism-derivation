@@ -1,7 +1,7 @@
 @attached(member, names: named(Prisms), named(prisms))
 @attached(
     extension,
-    conformances: Optic_Primitives.__OpticPrismAccessible,
+    conformances: Optic::__OpticPrismAccessible,
     names: arbitrary
 )
 public macro Prisms() = #externalMacro(

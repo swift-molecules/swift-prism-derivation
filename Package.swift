@@ -18,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-optic-primitives.git",
+            url: "https://github.com/swift-atoms/swift-optic.git",
             branch: "main"
         ),
         .package(
@@ -48,14 +48,14 @@ let package = Package(
             name: "Prism Derivation",
             dependencies: [
                 "Prism Derivation Macros",
-                .product(name: "Optic Primitives", package: "swift-optic-primitives"),
+                .product(name: "Optic", package: "swift-optic"),
             ]
         ),
         .testTarget(
             name: "Prism Derivation Tests",
             dependencies: [
                 "Prism Derivation",
-                .product(name: "Optic Primitives", package: "swift-optic-primitives"),
+                .product(name: "Optic", package: "swift-optic"),
             ]
         ),
     ],

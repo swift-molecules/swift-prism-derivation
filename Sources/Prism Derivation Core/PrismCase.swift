@@ -21,8 +21,8 @@ struct PrismCase {
         let pattern = extractionPattern
         let projection = projectedValue
         return """
-            \(access)var \(name): \(prism)<\(root), \(part)> {
-                \(prism)(
+            \(access)var \(name): \(prism)<\(root), \(root), \(part), \(part)>.Prism {
+                \(prism)<\(root), \(root), \(part), \(part)>.Prism(
                     embed: { \(raw: embeddedValue) in .\(name)\(raw: embedding) },
                     extract: { whole in
                         guard case .\(name)\(raw: pattern) = whole else { return nil }

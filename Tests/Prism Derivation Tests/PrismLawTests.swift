@@ -1,4 +1,4 @@
-import Optic_Primitives
+import Optic
 import Prism_Derivation
 import Testing
 

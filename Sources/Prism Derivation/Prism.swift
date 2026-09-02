@@ -1,3 +1,3 @@
-public import Optic_Primitives
+public import Optic
 
-public typealias Prism<Whole, Part> = Optic.Prism<Whole, Part>
+public typealias Prism<Whole, Part> = Optic<Whole, Whole, Part, Part>.Prism

@@ -1,3 +1,4 @@
+public import Optic
 public import Prism_Derivation
 
 @Prisms
