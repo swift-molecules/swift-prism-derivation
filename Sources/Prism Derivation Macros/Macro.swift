@@ -12,6 +12,6 @@ public struct Macro: MemberMacro {
         guard let declaration = declaration.as(EnumDeclSyntax.self) else {
             throw MacroExpansionErrorMessage("@Prisms applies to an enum declaration only.")
         }
-        return Derivation.expansion(of: declaration)
+        return Prism.Derivation.expansion(of: declaration)
     }
 }
