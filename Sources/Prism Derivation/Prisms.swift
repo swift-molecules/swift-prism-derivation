@@ -1,12 +1,8 @@
-import Optic
+@_exported import Either
+@_exported import Optic
 
-@attached(member, names: named(Prisms), named(prisms))
-@attached(
-    extension,
-    conformances: Optic::__OpticPrismAccessible,
-    names: arbitrary
-)
+@attached(member, names: arbitrary)
 public macro Prisms() = #externalMacro(
     module: "Prism_Derivation_Macros",
-    type: "PrismsMacro"
+    type: "Macro"
 )

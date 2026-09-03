@@ -17,19 +17,16 @@ let package = Package(
         .library(name: "Prism Derivation Core", targets: ["Prism Derivation Core"]),
     ],
     dependencies: [
-        .package(
-            url: "https://github.com/swift-atoms/swift-optic.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swiftlang/swift-syntax.git",
-            "602.0.0"..<"603.0.0"
-        ),
+        .package(url: "https://github.com/swift-atoms/swift-either.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-optic.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-coproduct-derivation.git", branch: "main"),
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", "603.0.2"..<"604.0.0"),
     ],
     targets: [
         .target(
             name: "Prism Derivation Core",
             dependencies: [
+                .product(name: "Coproduct Derivation Core", package: "swift-coproduct-derivation"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxBuilder", package: "swift-syntax"),
             ]
@@ -39,7 +36,6 @@ let package = Package(
             dependencies: [
                 "Prism Derivation Core",
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax"),
-                .product(name: "SwiftDiagnostics", package: "swift-syntax"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
             ]
@@ -48,6 +44,7 @@ let package = Package(
             name: "Prism Derivation",
             dependencies: [
                 "Prism Derivation Macros",
+                .product(name: "Either", package: "swift-either"),
                 .product(name: "Optic", package: "swift-optic"),
             ]
         ),
@@ -55,7 +52,9 @@ let package = Package(
             name: "Prism Derivation Tests",
             dependencies: [
                 "Prism Derivation",
-                .product(name: "Optic", package: "swift-optic"),
+                "Prism Derivation Macros",
+                .product(name: "SwiftSyntaxMacroExpansion", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxMacrosGenericTestSupport", package: "swift-syntax"),
             ]
         ),
     ],
@@ -63,13 +62,17 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
+    let ecosystem: [SwiftSetting] = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
         .enableExperimentalFeature("Lifetimes"),
+        .enableExperimentalFeature("MoveOnlyTuples"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
+    let package: [SwiftSetting] = []
+
+    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }
