@@ -2,7 +2,7 @@ import SwiftSyntax
 import SwiftSyntaxMacros
 import Prism_Derivation_Core
 
-public struct Macro: MemberMacro {
+public struct Macro: MemberMacro, ExtensionMacro {
     public static func expansion(
         of _: AttributeSyntax,
         providingMembersOf declaration: some DeclGroupSyntax,
@@ -13,5 +13,16 @@ public struct Macro: MemberMacro {
             throw MacroExpansionErrorMessage("@Prisms applies to an enum declaration only.")
         }
         return Prism.Derivation.expansion(of: declaration)
+    }
+
+    public static func expansion(
+        of _: AttributeSyntax,
+        attachedTo declaration: some DeclGroupSyntax,
+        providingExtensionsOf type: some TypeSyntaxProtocol,
+        conformingTo protocols: [TypeSyntax],
+        in _: some MacroExpansionContext
+    ) throws -> [ExtensionDeclSyntax] {
+        guard declaration.is(EnumDeclSyntax.self), !protocols.isEmpty else { return [] }
+        return Prism.Derivation.extensions(of: type)
     }
 }
