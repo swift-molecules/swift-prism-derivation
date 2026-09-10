@@ -131,7 +131,6 @@ func `prism match and embed obey partial round trip laws`() {
     #expect(number == 7)
     #expect(word == "seven")
 
-    // Merely forming this prism forces the nested generic-reference analysis.
     _ = NestedReference<Int>.prisms.value
 }
 

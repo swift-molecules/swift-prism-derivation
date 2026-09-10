@@ -7,8 +7,7 @@ extension Prism {
         public static func extensions(
             of type: some TypeSyntaxProtocol
         ) -> [ExtensionDeclSyntax] {
-            // Use the underlying protocol name, as Optional and Result do.
-            // This also lets the macro declaration advertise the exact conformance.
+
             let declaration: DeclSyntax = """
                 extension \(type.trimmed): __OpticPrismAccessible {}
                 """
